@@ -5,26 +5,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blackjack</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="blackjack.css">
 </head>
 
 <body>
-    <div id='compCounter'></div>
+    <div class="main">
+        <div class='counters d-flex flex-wrap'>
+            <div id='win'>Wins:0</div>
+            <div id='loss'>Losses: 0</div>
+            <div id='tie'>Ties: 0</div>
+            <div id='hand'>Hands Played: 0</div>
+        </div>
+        <div style="margin-top: 10px;">
+            <div class="playerArea d-flex flex-wrap">
+                <div class="col-3 d-flex flex-wrap">
+                    <h4 class="col-12">Computer:</h4>
+                    <div class="col-12 pointCounter" id='compCounter'></div>
+                </div>
+                <div class="col-9" id='compCards'>Comp Cards Here</div>
 
-    <div>
-        <div id='win'>Wins:0</div>
-        <div id='loss'>Losses: 0</div>
-        <div id='tie'>Ties: 0</div>
-        <div id='hand'>Hands Played: 0</div>
-    </div>
-    <div class='playerArea'>
-        <div id='playerCounter'></div>
-        <button id='newCardButton'>Hit</button>
-        <button id='stay'>Stay</button>
-        <button id='newDeal'>Deal Again</button>
-        <button id='newGame'>Restart Game</button>
-        <button id='counterReset'>Reset Counters</button>
-    </div>
-    <script src="blackjack.js"></script>
+            </div>
+
+            <div class="playerArea d-flex flex-wrap">
+                <div class="col-6">DECK</div>
+                <div class="col-6" id='message'>Message
+
+                </div>
+            </div>
+
+            <div class='playerArea d-flex flex-wrap'>
+                <div class="col-3 d-flex flex-wrap">
+                    <h4 class="col-12">Player:</h4>
+                    <div class="col-12 pointCounter" id='playerCounter'></div>
+                </div>
+                <div class='col-9' id='playerCards'> PLAYER CARDS HERE</div>
+            </div>
+
+            <div class="buttonsContainer d-flex flex-wrap">
+                <button class="buttons" id='newCardButton'>Hit</button>
+                <button class="buttons" id='stay'>Stay</button>
+                <button class="buttons" id='newDeal'>Deal Again</button>
+                <button class="buttons" id='newGame'>Restart Game</button>
+                <button class="buttons" id='counterReset'>Reset Counters</button>
+            </div>
+
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+        <script src="blackjack.js"></script>
 </body>
 
 </html>

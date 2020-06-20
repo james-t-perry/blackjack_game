@@ -65,10 +65,19 @@ console.log(compHand);
 // Player Count
 function countPlayer() {
     playerCount = 0;
+    var numAces = 0;
     playerHand.forEach(function (card) {
-        playerCount += card["value"];
+        playerCount += card['value'];
+        if (card['face'] == 'Ace') {
+            numAces++;
+        }
     });
+    // if (playerCount > 21 && numAces !== 0){
+    //     playerCount = playerCount - 10
+    // }
     console.log(playerCount);
+    console.log(numAces);
+    document.getElementById("playerCounter").innerText = "" + playerCount;
 }
 // Computer Count
 function countComp() {
@@ -80,11 +89,12 @@ function countComp() {
             numAces++;
         }
     });
-    if (compCount > 21 && numAces !== 0) {
-        compCount = compCount - 10;
-    }
+    // if (compCount > 21 && numAces !== 0){
+    //     compCount = compCount - 10
+    // }
     console.log(compCount);
     console.log(numAces);
+    document.getElementById("compCounter").innerText = "" + compCount;
 }
 //  Blackjack Check
 function blackjackCheck() {
@@ -125,7 +135,7 @@ document.getElementById('stay').addEventListener('click', compTurn);
 //     console.log('Computer Wins! Want to play again');}})
 // Deal Again
 function dealAgain() {
-    oldCards = __spreadArrays(oldCards, playerHand, compHand);
+    // oldCards = [...oldCards,...playerHand,...compHand];
     playerHand = [];
     compHand = [];
     initDeal();
