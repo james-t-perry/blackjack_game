@@ -23,11 +23,12 @@ var playerHand = [];
 var compHand = [];
 var playerCount = 0;
 var compCount = 0;
-var newCard = [];
+var newCard = {};
 var oldCards = [];
 var winCounter = 0;
 var tieCounter = 0;
 var lossCounter = 0;
+var handCounter = 0;
 // Generate the Deck
 function newDeck() {
     suits.forEach(function (suit) {
@@ -35,7 +36,6 @@ function newDeck() {
             var card = __assign(__assign({}, face), { suit: suit });
             deck.push(card);
         });
-        console.log(deck);
     });
 }
 newDeck();
@@ -51,26 +51,10 @@ shuffleArray(deck);
 console.log(deck);
 //  Initial Deal function
 function initDeal() {
-    playerHand.push(deck.shift());
-    if (deck.length == 0) {
-        shuffleOld();
-    }
-    ;
-    compHand.push(deck.shift());
-    if (deck.length == 0) {
-        shuffleOld();
-    }
-    ;
-    playerHand.push(deck.shift());
-    if (deck.length == 0) {
-        shuffleOld();
-    }
-    ;
-    compHand.push(deck.shift());
-    if (deck.length == 0) {
-        shuffleOld();
-    }
-    ;
+    playerHand.push(addCard());
+    compHand.push(addCard());
+    playerHand.push(addCard());
+    compHand.push(addCard());
     countPlayer();
     countComp();
     blackjackCheck();
@@ -96,16 +80,20 @@ function countComp() {
             numAces++;
         }
     });
+    if (compCount > 21 && numAces !== 0) {
+        compCount = compCount - 10;
+    }
     console.log(compCount);
+    console.log(numAces);
 }
 //  Blackjack Check
 function blackjackCheck() {
     if (playerCount === 21) {
-        PlayerWin();
+        playerWin();
         console.log("You got blackjack! You win!");
     }
     else if (compCount === 21) {
-        PlayerLose();
+        playerLose();
         console.log("The computer got blackjack! You lose.");
     }
     else if (compCount === 21 && playerCount === 21) {
@@ -124,13 +112,10 @@ function addCard() {
 // Player new card
 document.getElementById('newCardButton').addEventListener('click', function () {
     playerHand.push(addCard());
-    if (deck.length == 0) {
-        shuffleOld();
-    }
     console.log(playerHand);
     countPlayer();
     if (playerCount > 21) {
-        PlayerLose();
+        playerLose();
     }
 });
 // Computer New Card
@@ -140,24 +125,28 @@ document.getElementById('stay').addEventListener('click', compTurn);
 //     console.log('Computer Wins! Want to play again');}})
 // Deal Again
 function dealAgain() {
+    oldCards = __spreadArrays(oldCards, playerHand, compHand);
     playerHand = [];
     compHand = [];
     initDeal();
-    console.log(playerHand, playerCount, compHand, compCount, deck, oldCards);
+    console.log(playerHand, playerCount, compHand, compCount);
+    console.log(deck, oldCards);
 }
 document.getElementById('newDeal').addEventListener('click', dealAgain);
 // Shuffle Old Deck
 function shuffleOld() {
+    console.log('Shuffling Old');
     shuffleArray(oldCards);
     deck = __spreadArrays(oldCards);
     oldCards = [];
+    console.log(deck);
+    console.log(oldCards);
 }
 //  Start Game
 function startGame() {
-    winCounter = 0;
-    lossCounter = 0;
-    tieCounter = 0;
+    resetCounters();
     deck = [];
+    oldCards = [];
     playerHand = [];
     compHand = [];
     newDeck();
@@ -165,17 +154,34 @@ function startGame() {
     initDeal();
 }
 document.getElementById('newGame').addEventListener('click', startGame);
-function PlayerLose() {
+// Reset all counters
+function resetCounters() {
+    winCounter = 0;
+    lossCounter = 0;
+    tieCounter = 0;
+    handCounter = 0;
+    document.getElementById('win').innerText = "Wins: " + winCounter;
+    document.getElementById('loss').innerText = "Losses: " + lossCounter;
+    document.getElementById('tie').innerText = "Ties: " + tieCounter;
+    document.getElementById('hand').innerText = "Hands Played: " + handCounter;
+}
+document.getElementById('counterReset').addEventListener('click', resetCounters);
+//  Game outcome conditions 
+function playerLose() {
     console.log('You lose');
     lossCounter = lossCounter + 1;
     document.getElementById('loss').innerText = "Losses: " + lossCounter;
+    handCounter = handCounter + 1;
+    document.getElementById('hand').innerText = "Hands Played: " + handCounter;
     oldCards = __spreadArrays(oldCards, playerHand, compHand);
     console.log("Old Cards:", oldCards);
 }
-function PlayerWin() {
+function playerWin() {
     console.log("Player Wins!!");
     winCounter = winCounter + 1;
     document.getElementById('win').innerText = "Wins: " + winCounter;
+    handCounter = handCounter + 1;
+    document.getElementById('hand').innerText = "Hands Played: " + handCounter;
     oldCards = __spreadArrays(oldCards, playerHand, compHand);
     console.log("Old Cards:", oldCards);
 }
@@ -183,21 +189,22 @@ function tie() {
     console.log("It's a tie! Try your luck again?");
     tieCounter = tieCounter + 1;
     document.getElementById('tie').innerText = "Ties: " + tieCounter;
+    handCounter = handCounter + 1;
+    document.getElementById('hand').innerText = "Hands Played: " + handCounter;
     oldCards = __spreadArrays(oldCards, playerHand, compHand);
     console.log("Old Cards:", oldCards);
 }
+//  Computer play hand
 function compPlay() {
     compHand.push(addCard());
-    if (deck.length == 0) {
-        shuffleOld();
-    }
     countComp();
 }
+// Decide Winner
 function compTurn() {
     if (compCount < 17) {
         compPlay();
         if (compCount > 21) {
-            PlayerWin();
+            playerWin();
         }
         else {
             compTurn();
@@ -205,19 +212,13 @@ function compTurn() {
     }
     else {
         if (compCount > playerCount) {
-            PlayerLose();
-            // oldCards = [...oldCards, ...playerHand, ...compHand]
-            // console.log("Old Cards:", oldCards);
+            playerLose();
         }
         else if (compCount < playerCount) {
-            PlayerWin();
-            // oldCards = [...oldCards, ...playerHand, ...compHand]
-            // console.log("Old Cards:", oldCards);
+            playerWin();
         }
         else {
             tie();
-            // oldCards = [...oldCards, ...playerHand, ...compHand]
-            // console.log("Old Cards:", oldCards);
         }
     }
 }
