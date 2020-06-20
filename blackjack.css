@@ -1,0 +1,17 @@
+.playerArea{
+    height: 300px;
+    width: 50%;
+    background-color: green;
+    color: white;
+    font-size: large;
+}
+#compCounter{
+    display: block;
+    height: 100px;
+    width: 50%;
+}
+#playerCounter{
+height: 100px;
+width: 100px;
+margin: auto;
+}
