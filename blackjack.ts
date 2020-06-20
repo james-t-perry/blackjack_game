@@ -7,6 +7,7 @@ let playerCount: number = 0;
 let compCount: number = 0;
 let newCard = {};
 let oldCards = [];
+let gameOver: boolean = false;
 
 let winCounter: number = 0;
 let tieCounter: number = 0;
@@ -62,9 +63,9 @@ function countPlayer() {
             numAces++
         }
     })
-    // if (playerCount > 21 && numAces !== 0){
-    //     playerCount = playerCount - 10
-    // }
+    if (playerCount > 21 && numAces !== 0){
+        playerCount = playerCount - 10
+    }
     console.log(playerCount);
     console.log(numAces); 
     document.getElementById("playerCounter").innerText = `${playerCount}`
@@ -81,9 +82,9 @@ function countComp() {
             numAces++
         }
     })
-    // if (compCount > 21 && numAces !== 0){
-    //     compCount = compCount - 10
-    // }
+    if (compCount > 21 && numAces !== 0){
+        compCount = compCount - 10
+    }
     console.log(compCount);
     console.log(numAces);  
     document.getElementById("compCounter").innerText = `${compCount}`
@@ -93,15 +94,15 @@ function countComp() {
 function blackjackCheck(){
 if (playerCount === 21) {
     playerWin();
-    console.log("You got blackjack! You win!");
+    document.getElementById('message').innerText = "You got blackjack! You win!";
 }
 else if (compCount === 21) {
     playerLose();
-    console.log("The computer got blackjack! You lose.");
+    document.getElementById('message').innerText = "The computer got blackjack! You lose.";
 }
 else if (compCount === 21 && playerCount === 21) {
     tie()
-    console.log("You both got blackjack! That shouldn't happen! Try your luck again?");
+    document.getElementById('message').innerText = "You both got blackjack! That shouldn't happen! Try your luck again?";
 }
 }
 
@@ -127,19 +128,17 @@ document.getElementById('newCardButton').addEventListener('click', function () {
 // Computer New Card
 
 document.getElementById('stay').addEventListener('click', compTurn)
-// if (compCount > playerCount) {
-//     lossCounter = lossCounter++
-//     console.log('Computer Wins! Want to play again');}})
-
 
 // Deal Again
 
 function dealAgain() {
     // oldCards = [...oldCards,...playerHand,...compHand];
+    gameOver = false
     playerHand = [];
     compHand = [];
     initDeal();
     document.getElementById('message').innerText = "Your move again, player!"
+    blackjackCheck()
     console.log(playerHand, playerCount, compHand, compCount);
     console.log(deck, oldCards);
 }
@@ -157,6 +156,7 @@ function shuffleOld() {
 //  Start Game
 function startGame() {
     resetCounters()
+    gameOver = false
     deck = [];
     oldCards = [];
     playerHand = [];
@@ -191,6 +191,8 @@ function playerLose() {
     document.getElementById('hand').innerText = `Hands Played: ${handCounter}`;
     oldCards = [...oldCards,...playerHand,...compHand];
     console.log("Old Cards:", oldCards);
+    gameOver = true
+
 }
 function playerWin() {
     document.getElementById('message').innerText = "Player Wins!! Deal Again?";
@@ -200,6 +202,7 @@ function playerWin() {
     document.getElementById('hand').innerText = `Hands Played: ${handCounter}`;
     oldCards = [...oldCards,...playerHand,...compHand];
     console.log("Old Cards:", oldCards);
+    gameOver = true
 }
 function tie() {
     document.getElementById('message').innerText = `It's a tie! Try your luck again?`
@@ -209,6 +212,7 @@ function tie() {
     document.getElementById('hand').innerText = `Hands Played: ${handCounter}`;
     oldCards = [...oldCards,...playerHand,...compHand];
     console.log("Old Cards:", oldCards);
+    gameOver = true
 }
 
 //  Computer play hand
