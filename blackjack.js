@@ -139,6 +139,7 @@ function dealAgain() {
     playerHand = [];
     compHand = [];
     initDeal();
+    document.getElementById('message').innerText = "Your move again, player!";
     console.log(playerHand, playerCount, compHand, compCount);
     console.log(deck, oldCards);
 }
@@ -178,7 +179,7 @@ function resetCounters() {
 document.getElementById('counterReset').addEventListener('click', resetCounters);
 //  Game outcome conditions 
 function playerLose() {
-    console.log('You lose');
+    document.getElementById('message').innerText = 'You lose, sorry!  Deal Again?';
     lossCounter = lossCounter + 1;
     document.getElementById('loss').innerText = "Losses: " + lossCounter;
     handCounter = handCounter + 1;
@@ -187,7 +188,7 @@ function playerLose() {
     console.log("Old Cards:", oldCards);
 }
 function playerWin() {
-    console.log("Player Wins!!");
+    document.getElementById('message').innerText = "Player Wins!! Deal Again?";
     winCounter = winCounter + 1;
     document.getElementById('win').innerText = "Wins: " + winCounter;
     handCounter = handCounter + 1;
@@ -196,7 +197,7 @@ function playerWin() {
     console.log("Old Cards:", oldCards);
 }
 function tie() {
-    console.log("It's a tie! Try your luck again?");
+    document.getElementById('message').innerText = "It's a tie! Try your luck again?";
     tieCounter = tieCounter + 1;
     document.getElementById('tie').innerText = "Ties: " + tieCounter;
     handCounter = handCounter + 1;
@@ -232,3 +233,4 @@ function compTurn() {
         }
     }
 }
+// Message functions 

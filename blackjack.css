@@ -57,3 +57,8 @@ text-align: center;
 body{
     background-color: darkgreen;
 }
+#message{
+    text-align: justify;
+    font-size: larger;
+    
+}
