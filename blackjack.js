@@ -25,6 +25,8 @@ var playerCount = 0;
 var compCount = 0;
 var newCard = {};
 var oldCards = [];
+var gameOver = false;
+var deckNumber = 4;
 var winCounter = 0;
 var tieCounter = 0;
 var lossCounter = 0;
@@ -38,7 +40,7 @@ function newDeck() {
         });
     });
 }
-newDeck();
+// newDeck()
 //  Shuffle the deck
 function shuffleArray(array) {
     var _a;
@@ -46,6 +48,10 @@ function shuffleArray(array) {
         var j = Math.floor(Math.random() * (i + 1));
         _a = [array[j], array[i]], array[i] = _a[0], array[j] = _a[1];
     }
+}
+// Multiple Decks
+for (var i = 0; i < deckNumber; i++) {
+    newDeck();
 }
 shuffleArray(deck);
 console.log(deck);
@@ -57,6 +63,8 @@ function initDeal() {
     compHand.push(addCard());
     countPlayer();
     countComp();
+    playerCards(playerHand);
+    compCards(compHand);
     blackjackCheck();
 }
 initDeal();
@@ -133,6 +141,8 @@ document.getElementById('stay').addEventListener('click', compTurn);
 // Deal Again
 function dealAgain() {
     // oldCards = [...oldCards,...playerHand,...compHand];
+    gameOver = false;
+    // let usedCards = document.getElementsByClassName('newCard')
     playerHand = [];
     compHand = [];
     initDeal();
@@ -154,6 +164,7 @@ function shuffleOld() {
 //  Start Game
 function startGame() {
     resetCounters();
+    gameOver = false;
     deck = [];
     oldCards = [];
     playerHand = [];
@@ -184,6 +195,7 @@ function playerLose() {
     document.getElementById('hand').innerText = "Hands Played: " + handCounter;
     oldCards = __spreadArrays(oldCards, playerHand, compHand);
     console.log("Old Cards:", oldCards);
+    gameOver = true;
 }
 function playerWin() {
     document.getElementById('message').innerText = "Player Wins!! Deal Again?";
@@ -193,6 +205,7 @@ function playerWin() {
     document.getElementById('hand').innerText = "Hands Played: " + handCounter;
     oldCards = __spreadArrays(oldCards, playerHand, compHand);
     console.log("Old Cards:", oldCards);
+    gameOver = true;
 }
 function tie() {
     document.getElementById('message').innerText = "It's a tie! Try your luck again?";
@@ -202,6 +215,7 @@ function tie() {
     document.getElementById('hand').innerText = "Hands Played: " + handCounter;
     oldCards = __spreadArrays(oldCards, playerHand, compHand);
     console.log("Old Cards:", oldCards);
+    gameOver = true;
 }
 //  Computer play hand
 function compPlay() {
@@ -232,3 +246,53 @@ function compTurn() {
     }
 }
 // Message functions 
+function playerCards(e) {
+    e.forEach(function (element) {
+        var card = document.createElement('div');
+        card.classList.add('col-2', 'newCard');
+        var cardSuit = element.suit;
+        switch (cardSuit) {
+            case 'Hearts':
+                card.innerHTML = "<p>\u2665</p><p>" + element.face + "</p><p>\u2665</p>";
+                card.style.color = 'red';
+                break;
+            case 'Diamonds':
+                card.innerHTML = "<p>\u2666</p><p>" + element.face + "</p><p>\u2666</p>";
+                card.style.color = 'red';
+                break;
+            case 'Spades':
+                card.innerHTML = "<p>\u2660</p><p>" + element.face + "</p><p>\u2660</p>";
+                break;
+            case 'Clubs':
+                card.innerHTML = "<p>\u2663</p><p>" + element.face + "</p><p>\u2663</p>";
+                break;
+        }
+        document.getElementById('playerCards').append(card);
+    });
+}
+function compCards(e) {
+    e.forEach(function (element) {
+        var card = document.createElement('div');
+        card.classList.add('col-2', 'newCard');
+        var cardSuit = element.suit;
+        switch (cardSuit) {
+            case 'Hearts':
+                card.innerHTML = "<p>\u2665</p><p>" + element.face + "</p><p>\u2665</p>";
+                card.style.color = 'red';
+                break;
+            case 'Diamonds':
+                card.innerHTML = "<p>\u2666</p><p>" + element.face + "</p><p>\u2666</p>";
+                card.style.color = 'red';
+                break;
+            case 'Spades':
+                card.innerHTML = "<p>\u2660</p><p>" + element.face + "</p><p>\u2660</p>";
+                break;
+            case 'Clubs':
+                card.innerHTML = "<p>\u2663</p><p>" + element.face + "</p><p>\u2663</p>";
+                break;
+        }
+        document.getElementById('compCards').append(card);
+    });
+    // document.getElementById('compCards')..innerText = '';
+    // document.querySelector('#compCards').lastChild.style.backgroundColor = 'blue'
+}

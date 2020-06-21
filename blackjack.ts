@@ -8,6 +8,7 @@ let compCount: number = 0;
 let newCard = {};
 let oldCards = [];
 let gameOver: boolean = false;
+let deckNumber: number = 4;
 
 let winCounter: number = 0;
 let tieCounter: number = 0;
@@ -24,7 +25,7 @@ function newDeck() {
     })
 }
 
-newDeck()
+// newDeck()
 //  Shuffle the deck
 
 function shuffleArray(array) {
@@ -33,10 +34,15 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
+
+
+
+// Multiple Decks
+for(let i = 0; i < deckNumber; i++){
+    newDeck()
+}
 shuffleArray(deck)
 console.log(deck);
-
-
 //  Initial Deal function
 function initDeal() {
     playerHand.push(addCard());
@@ -45,6 +51,8 @@ function initDeal() {
     compHand.push(addCard());
     countPlayer();
     countComp();
+    playerCards(playerHand)
+    compCards(compHand)
     blackjackCheck();
 }
 
@@ -134,6 +142,7 @@ document.getElementById('stay').addEventListener('click', compTurn)
 function dealAgain() {
     // oldCards = [...oldCards,...playerHand,...compHand];
     gameOver = false
+    // let usedCards = document.getElementsByClassName('newCard')
     playerHand = [];
     compHand = [];
     initDeal();
@@ -248,3 +257,56 @@ function compTurn() {
 }
 
 // Message functions 
+
+function playerCards(e){
+    e.forEach(element => {
+        let card = document.createElement('div');
+        card.classList.add('col-2', 'newCard');
+        var cardSuit = element.suit;
+        switch(cardSuit){
+            case 'Hearts':
+                card.innerHTML = `<p>♥</p><p>${element.face}</p><p>♥</p>`
+                card.style.color = 'red';
+                break
+            case 'Diamonds':
+                card.innerHTML =`<p>♦</p><p>${element.face}</p><p>♦</p>`
+                card.style.color = 'red';
+                break
+            case 'Spades':
+                card.innerHTML = `<p>♠</p><p>${element.face}</p><p>♠</p>`
+                break
+            case 'Clubs':
+                card.innerHTML = `<p>♣</p><p>${element.face}</p><p>♣</p>`
+                break
+        }
+        document.getElementById('playerCards').append(card)
+    });
+}
+
+function compCards(e){
+    e.forEach(element => {
+        let card = document.createElement('div');
+        card.classList.add('col-2', 'newCard');
+        var cardSuit = element.suit;
+        switch(cardSuit){
+            case 'Hearts':
+                card.innerHTML = `<p>♥</p><p>${element.face}</p><p>♥</p>`
+                card.style.color = 'red';
+                break
+            case 'Diamonds':
+                card.innerHTML =`<p>♦</p><p>${element.face}</p><p>♦</p>`
+                card.style.color = 'red';
+                break
+            case 'Spades':
+                card.innerHTML = `<p>♠</p><p>${element.face}</p><p>♠</p>`
+                break
+            case 'Clubs':
+                card.innerHTML = `<p>♣</p><p>${element.face}</p><p>♣</p>`
+                break
+        }
+        document.getElementById('compCards').append(card)
+    });
+    // document.getElementById('compCards')..innerText = '';
+    // document.querySelector('#compCards').lastChild.style.backgroundColor = 'blue'
+}
+
