@@ -10,6 +10,8 @@ let oldCards = [];
 let gameOver: boolean = false;
 let deckNumber: number = 4;
 
+let createdCard;
+
 let winCounter: number = 0;
 let tieCounter: number = 0;
 let lossCounter: number = 0;
@@ -71,8 +73,11 @@ function countPlayer() {
             numAces++
         }
     })
-    if (playerCount > 21 && numAces !== 0){
-        playerCount = playerCount - 10
+    if (compCount > 21 && numAces !== 0){
+        for(let i = 0; i < numAces; i++){
+        compCount = compCount - 10
+        }
+        numAces = 0
     }
     console.log(playerCount);
     console.log(numAces); 
@@ -91,7 +96,10 @@ function countComp() {
         }
     })
     if (compCount > 21 && numAces !== 0){
+        for(let i = 0; i < numAces; i++){
         compCount = compCount - 10
+        }
+        numAces = 0
     }
     console.log(compCount);
     console.log(numAces);  
@@ -126,7 +134,10 @@ function addCard() {
 
 document.getElementById('newCardButton').addEventListener('click', function () {
     playerHand.push(addCard());
+    console.log(newCard);
     console.log(playerHand);
+    createCard()
+    document.getElementById('playerCards').append(createdCard)
     countPlayer()
     if (playerCount > 21) {
         playerLose()
@@ -140,9 +151,9 @@ document.getElementById('stay').addEventListener('click', compTurn)
 // Deal Again
 
 function dealAgain() {
-    // oldCards = [...oldCards,...playerHand,...compHand];
+
     gameOver = false
-    // let usedCards = document.getElementsByClassName('newCard')
+    removeCards()
     playerHand = [];
     compHand = [];
     initDeal();
@@ -228,6 +239,8 @@ function tie() {
 
 function compPlay() {
     compHand.push(addCard());
+    createCard()
+    document.getElementById('compCards').append(createdCard)
     countComp();
 }
 
@@ -310,3 +323,34 @@ function compCards(e){
     // document.querySelector('#compCards').lastChild.style.backgroundColor = 'blue'
 }
 
+function createCard(){
+    createdCard = document.createElement('div');
+    createdCard.classList.add('col-2', 'newCard');
+    var cardSuit = newCard['suit'];
+    switch(cardSuit){
+        case 'Hearts':
+            createdCard.innerHTML = `<p>♥</p><p>${newCard['face']}</p><p>♥</p>`
+            createdCard.style.color = 'red';
+            break
+        case 'Diamonds':
+            createdCard.innerHTML =`<p>♦</p><p>${newCard['face']}</p><p>♦</p>`
+            createdCard.style.color = 'red';
+            break
+        case 'Spades':
+            createdCard.innerHTML = `<p>♠</p><p>${newCard['face']}</p><p>♠</p>`
+            break
+        case 'Clubs':
+            createdCard.innerHTML = `<p>♣</p><p>${newCard['face']}</p><p>♣</p>`
+            break
+    }
+    return createdCard
+}
+
+// Remove cards from screen
+
+function removeCards(){
+   let usedCards = document.querySelectorAll('.newCard')
+   usedCards.forEach(element => {
+       element.remove()
+   });
+}

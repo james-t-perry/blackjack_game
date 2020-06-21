@@ -27,6 +27,7 @@ var newCard = {};
 var oldCards = [];
 var gameOver = false;
 var deckNumber = 4;
+var createdCard;
 var winCounter = 0;
 var tieCounter = 0;
 var lossCounter = 0;
@@ -80,8 +81,11 @@ function countPlayer() {
             numAces++;
         }
     });
-    if (playerCount > 21 && numAces !== 0) {
-        playerCount = playerCount - 10;
+    if (compCount > 21 && numAces !== 0) {
+        for (var i = 0; i < numAces; i++) {
+            compCount = compCount - 10;
+        }
+        numAces = 0;
     }
     console.log(playerCount);
     console.log(numAces);
@@ -98,7 +102,10 @@ function countComp() {
         }
     });
     if (compCount > 21 && numAces !== 0) {
-        compCount = compCount - 10;
+        for (var i = 0; i < numAces; i++) {
+            compCount = compCount - 10;
+        }
+        numAces = 0;
     }
     console.log(compCount);
     console.log(numAces);
@@ -130,7 +137,10 @@ function addCard() {
 // Player new card
 document.getElementById('newCardButton').addEventListener('click', function () {
     playerHand.push(addCard());
+    console.log(newCard);
     console.log(playerHand);
+    createCard();
+    document.getElementById('playerCards').append(createdCard);
     countPlayer();
     if (playerCount > 21) {
         playerLose();
@@ -140,9 +150,8 @@ document.getElementById('newCardButton').addEventListener('click', function () {
 document.getElementById('stay').addEventListener('click', compTurn);
 // Deal Again
 function dealAgain() {
-    // oldCards = [...oldCards,...playerHand,...compHand];
     gameOver = false;
-    // let usedCards = document.getElementsByClassName('newCard')
+    removeCards();
     playerHand = [];
     compHand = [];
     initDeal();
@@ -220,6 +229,8 @@ function tie() {
 //  Computer play hand
 function compPlay() {
     compHand.push(addCard());
+    createCard();
+    document.getElementById('compCards').append(createdCard);
     countComp();
 }
 // Decide Winner
@@ -295,4 +306,33 @@ function compCards(e) {
     });
     // document.getElementById('compCards')..innerText = '';
     // document.querySelector('#compCards').lastChild.style.backgroundColor = 'blue'
+}
+function createCard() {
+    createdCard = document.createElement('div');
+    createdCard.classList.add('col-2', 'newCard');
+    var cardSuit = newCard['suit'];
+    switch (cardSuit) {
+        case 'Hearts':
+            createdCard.innerHTML = "<p>\u2665</p><p>" + newCard['face'] + "</p><p>\u2665</p>";
+            createdCard.style.color = 'red';
+            break;
+        case 'Diamonds':
+            createdCard.innerHTML = "<p>\u2666</p><p>" + newCard['face'] + "</p><p>\u2666</p>";
+            createdCard.style.color = 'red';
+            break;
+        case 'Spades':
+            createdCard.innerHTML = "<p>\u2660</p><p>" + newCard['face'] + "</p><p>\u2660</p>";
+            break;
+        case 'Clubs':
+            createdCard.innerHTML = "<p>\u2663</p><p>" + newCard['face'] + "</p><p>\u2663</p>";
+            break;
+    }
+    return createdCard;
+}
+// Remove cards from screen
+function removeCards() {
+    var usedCards = document.querySelectorAll('.newCard');
+    usedCards.forEach(function (element) {
+        element.remove();
+    });
 }
