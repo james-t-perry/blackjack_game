@@ -26,12 +26,28 @@ var compCount = 0;
 var newCard = {};
 var oldCards = [];
 var gameOver = false;
-var deckNumber = 4;
+var deckNumber = 0;
+var decks = '';
 var createdCard;
 var winCounter = 0;
 var tieCounter = 0;
 var lossCounter = 0;
 var handCounter = 0;
+// Prompt for number of decks
+function decksCheck() {
+    decks = prompt("How many decks do you want to play with?", '2');
+    if (decks != null) {
+        deckNumber = parseInt(decks);
+        for (var i = 0; i < deckNumber; i++) {
+            newDeck();
+        }
+    }
+}
+decksCheck();
+// Multiple Decks
+// for (let i = 0; i < deckNumber; i++) {
+//     newDeck()
+// }
 // Generate the Deck
 function newDeck() {
     suits.forEach(function (suit) {
@@ -41,7 +57,6 @@ function newDeck() {
         });
     });
 }
-// newDeck()
 //  Shuffle the deck
 function shuffleArray(array) {
     var _a;
@@ -50,18 +65,32 @@ function shuffleArray(array) {
         _a = [array[j], array[i]], array[i] = _a[0], array[j] = _a[1];
     }
 }
-// Multiple Decks
-for (var i = 0; i < deckNumber; i++) {
-    newDeck();
-}
 shuffleArray(deck);
+// Create deck
+function createDeck(deck) {
+    for (var i = 0; i <= deck.length; i++) {
+        var card = document.createElement('div');
+        card.style.zIndex = "" + i;
+        card.style.marginLeft = i + "px";
+        card.classList.add('cardBack', 'deckCards');
+        document.getElementById('deck').append(card);
+    }
+}
+createDeck(deck);
 console.log(deck);
+// Remove from deck
+function removeTop() {
+    document.querySelector('#deck').lastChild.remove();
+}
 //  Initial Deal function
 function initDeal() {
     playerHand.push(addCard());
     compHand.push(addCard());
     playerHand.push(addCard());
     compHand.push(addCard());
+    for (var i = 1; i <= 4; i++) {
+        removeTop();
+    }
     countPlayer();
     countComp();
     playerCards(playerHand);
@@ -81,14 +110,12 @@ function countPlayer() {
             numAces++;
         }
     });
-    if (compCount > 21 && numAces !== 0) {
+    if (playerCount > 21 && numAces !== 0) {
         for (var i = 0; i < numAces; i++) {
-            compCount = compCount - 10;
+            playerCount = playerCount - 10;
         }
         numAces = 0;
     }
-    console.log(playerCount);
-    console.log(numAces);
     document.getElementById("playerCounter").innerText = "" + playerCount;
 }
 // Computer Count
@@ -107,9 +134,6 @@ function countComp() {
         }
         numAces = 0;
     }
-    console.log(compCount);
-    console.log(numAces);
-    document.getElementById("compCounter").innerText = "" + compCount;
 }
 //  Blackjack Check
 function blackjackCheck() {
@@ -140,6 +164,7 @@ document.getElementById('newCardButton').addEventListener('click', function () {
     console.log(newCard);
     console.log(playerHand);
     createCard();
+    document.querySelector('#deck').lastChild.remove();
     document.getElementById('playerCards').append(createdCard);
     countPlayer();
     if (playerCount > 21) {
@@ -154,6 +179,7 @@ function dealAgain() {
     removeCards();
     playerHand = [];
     compHand = [];
+    document.getElementById('compCounter').innerText = '?';
     initDeal();
     document.getElementById('message').innerText = "Your move again, player!";
     blackjackCheck();
@@ -167,19 +193,25 @@ function shuffleOld() {
     shuffleArray(oldCards);
     deck = __spreadArrays(oldCards);
     oldCards = [];
+    createDeck(deck);
     console.log(deck);
     console.log(oldCards);
 }
 //  Start Game
 function startGame() {
     resetCounters();
+    removeCards();
+    removeDeck();
+    document.getElementById('compCounter').innerText = '?';
     gameOver = false;
     deck = [];
     oldCards = [];
     playerHand = [];
     compHand = [];
+    decksCheck();
     newDeck();
     shuffleArray(deck);
+    createDeck(deck);
     initDeal();
 }
 document.getElementById('newGame').addEventListener('click', startGame);
@@ -197,6 +229,7 @@ function resetCounters() {
 document.getElementById('counterReset').addEventListener('click', resetCounters);
 //  Game outcome conditions 
 function playerLose() {
+    compReveal();
     document.getElementById('message').innerText = 'You lose, sorry!  Deal Again?';
     lossCounter = lossCounter + 1;
     document.getElementById('loss').innerText = "Losses: " + lossCounter;
@@ -207,6 +240,7 @@ function playerLose() {
     gameOver = true;
 }
 function playerWin() {
+    compReveal();
     document.getElementById('message').innerText = "Player Wins!! Deal Again?";
     winCounter = winCounter + 1;
     document.getElementById('win').innerText = "Wins: " + winCounter;
@@ -217,6 +251,7 @@ function playerWin() {
     gameOver = true;
 }
 function tie() {
+    compReveal();
     document.getElementById('message').innerText = "It's a tie! Try your luck again?";
     tieCounter = tieCounter + 1;
     document.getElementById('tie').innerText = "Ties: " + tieCounter;
@@ -228,10 +263,14 @@ function tie() {
 }
 //  Computer play hand
 function compPlay() {
+    var compCard2 = document.getElementById('compCards').children[1];
+    compCard2.classList.remove("cardBack");
     compHand.push(addCard());
+    document.querySelector('#deck').lastChild.remove();
     createCard();
     document.getElementById('compCards').append(createdCard);
     countComp();
+    document.getElementById('compCounter').innerText = "" + compCount;
 }
 // Decide Winner
 function compTurn() {
@@ -256,7 +295,7 @@ function compTurn() {
         }
     }
 }
-// Message functions 
+// Generate Cards
 function playerCards(e) {
     e.forEach(function (element) {
         var card = document.createElement('div');
@@ -289,11 +328,11 @@ function compCards(e) {
         switch (cardSuit) {
             case 'Hearts':
                 card.innerHTML = "<p>\u2665</p><p>" + element.face + "</p><p>\u2665</p>";
-                card.style.color = 'red';
+                card.classList.add('red');
                 break;
             case 'Diamonds':
                 card.innerHTML = "<p>\u2666</p><p>" + element.face + "</p><p>\u2666</p>";
-                card.style.color = 'red';
+                card.classList.add('red');
                 break;
             case 'Spades':
                 card.innerHTML = "<p>\u2660</p><p>" + element.face + "</p><p>\u2660</p>";
@@ -304,8 +343,9 @@ function compCards(e) {
         }
         document.getElementById('compCards').append(card);
     });
-    // document.getElementById('compCards')..innerText = '';
-    // document.querySelector('#compCards').lastChild.style.backgroundColor = 'blue'
+    var compCard2 = document.getElementById('compCards').children[1];
+    compCard2.classList.add("cardBack");
+    // compCard2.innerHTML = ``   
 }
 function createCard() {
     createdCard = document.createElement('div');
@@ -335,4 +375,20 @@ function removeCards() {
     usedCards.forEach(function (element) {
         element.remove();
     });
+}
+function removeDeck() {
+    var usedDeck = document.querySelectorAll('deckCards');
+    usedDeck.forEach(function (element) {
+        element.remove();
+    });
+}
+// function createDeck2(){
+//         let c
+//     });
+// }
+// Flip Comp card
+function compReveal() {
+    var compCard2 = document.getElementById('compCards').children[1];
+    compCard2.classList.remove("cardBack");
+    document.getElementById('compCounter').innerText = "" + compCount;
 }

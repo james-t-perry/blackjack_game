@@ -18,38 +18,37 @@
             <div id='tie'>Ties: 0</div>
             <div id='hand'>Hands Played: 0</div>
         </div>
-        <div style="margin-top: 10px;">
+        <div class="main">
             <div class="playerArea d-flex flex-wrap">
-                <div class="col-3 d-flex flex-wrap">
+                <div class="col-lg-3 col-12 d-flex flex-wrap">
                     <h4 class="col-12">Computer:</h4>
-                    <div class="col-12 pointCounter" id='compCounter'></div>
+                    <div class="col-12 pointCounter" id='compCounter'>?</div>
                 </div>
                 <div class="col-9 d-flex flex-wrap" id='compCards'></div>
 
             </div>
 
             <div class="playerArea d-flex flex-wrap" id='info'>
-                <div class="col-6">DECK</div>
-                <div class="col-6" id='message'>It's Your Move!
-
+                <div class="col-lg-4 col-12 deck" id='deck' style="position: relative;">DECK:</div>
+                <div class="col-lg-4 col-12 text-center" id='message'>It's Your Move!</div>
+                <div class="buttonsContainer col-lg-4 col-12 d-flex flex-wrap">
+                    <button class="buttons" id='newCardButton'>Hit</button>
+                    <button class="buttons" id='stay'>Stay</button>
+                    <button class="buttons" id='newDeal'>Deal Again</button>
+                    <button class="buttons" id='newGame'>Restart Game</button>
+                    <button class="buttons" id='counterReset'>Reset Counters</button>
                 </div>
             </div>
 
             <div class='playerArea d-flex flex-wrap'>
-                <div class="col-3 d-flex flex-wrap">
+                <div class="col-lg-3 col-12 d-flex flex-wrap">
                     <h4 class="col-12">Player:</h4>
                     <div class="col-12 pointCounter" id='playerCounter'></div>
                 </div>
-                <div class='col-9 d-flex flex-wrap' id='playerCards'></div>
+                <div class='col-lg-9 col-12 d-flex flex-wrap' id='playerCards'></div>
             </div>
 
-            <div class="buttonsContainer d-flex flex-wrap">
-                <button class="buttons" id='newCardButton'>Hit</button>
-                <button class="buttons" id='stay'>Stay</button>
-                <button class="buttons" id='newDeal'>Deal Again</button>
-                <button class="buttons" id='newGame'>Restart Game</button>
-                <button class="buttons" id='counterReset'>Reset Counters</button>
-            </div>
+           
 
         </div>
 

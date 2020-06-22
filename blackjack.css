@@ -1,11 +1,15 @@
 .playerArea{
-    height: 200px;
-    width: 80%;
+    height: 250px;
+    width: 90%;
     margin: auto;
     background-color: green;
     color: white;
     font-size: large;
     padding: 10px;
+}
+.main{
+    margin-top: 10px;
+
 }
 #compCounter{
     background-color: blue;
@@ -13,7 +17,7 @@
 }
 .pointCounter{
 height: 100px;
-width: 100px;
+max-width: 100px;
 /* margin: 10px 10px; */
 line-height: 100px;
 font-size: 50px;
@@ -23,9 +27,9 @@ text-align: center;
 }
 
 .counters{
-    width: 90%;
-    height: 75px;
-    line-height: 75px;
+    width: 95%;
+    height: 60px;
+    line-height: 60px;
     justify-content: space-evenly;
     border: 2px solid black;
     background-color: grey;
@@ -35,18 +39,19 @@ text-align: center;
 }
 .buttonsContainer{
     width: 90%;
-    background-color: darkslateblue;
+    background-color: grey;
     justify-content: space-evenly;
-    height: 60px;
+    /* height: 60px; */
     /* padding: 2px; */
     border: 2px solid black;
     margin: 20px auto;
 }
 .buttons{
-    height: 80%;
+    height: 30px;
     color: blue;
     width: auto;
     margin: auto;
+    border-radius: 5px;
 }
 
 .cards{
@@ -59,23 +64,47 @@ body{
 }
 #message{
     text-align: justify;
-    font-size: 25px;
+    font-size: 40px;
     
 }
 .newCard{
-    height: 210px;
+    height: 80%;
     width: 125px;
     border-radius: 5%;
+    border: 1px solid white;
     background-color: antiquewhite;
     color: black;
-    /* margin: auto; */
-    font-size: 40px;
+    font-size: 35px;
     text-align: center;
     justify-content: center;
     margin-left: 5px;
-    /* display: inline-block; */
 }
 
 #info{
-    height: 200px;
+    height: 220px;
+}
+.red{
+    color: red
+}
+.cardBack{
+    background-color: blue;
+    color: blue
+}
+.deck{
+    height: 100%;
+}
+.deckCards{
+    height: 80%;
+    width: 125px;
+    border-radius: 5%;
+    position: absolute;
+    top: 30px;
+    left: 5px;
+    border: 1px solid white;
+}
+
+.landingPage{
+    color: white;
+    text-align: center;
+    justify-content: center;
 }
